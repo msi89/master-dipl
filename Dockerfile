@@ -5,7 +5,5 @@ RUN apt-get update && apt-get -y upgrade && \
 
 WORKDIR /app
 
-
-# COPY requirements.txt ./
-
-# RUN pip install -r requirements.txt
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - 
+RUN apt-get install -y nodejs

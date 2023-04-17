@@ -1,3 +1,5 @@
 .vscode
 .devcontainer
+.git
+templates/node_mobules
 virtualenv
