@@ -4,12 +4,24 @@ services:
         container_name: fastapi
         build: backend
         restart: always
+        command: uvicorn main:app --host 0.0.0.0 --root-path="/api"
+    # api:
+    #     container_name: api
+    #     build: app-test
+    #     restart: always
+    #     command: uvicorn main:app --host 0.0.0.0 --root-path="/api"
     nginx:
         depends_on: 
             - fastapi
         container_name: proxy-app
-        build: frontend
+        build: 
+           context: frontend
+           args:
+            #   - API_URL=http://localhost:8000/api
+              - API_URL=/fastapi
         ports: 
             - "8000:80"
         restart: always
+        volumes:
+            - ./frontend/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
         

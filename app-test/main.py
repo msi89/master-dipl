@@ -3,8 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from router import default as default_api
-import uvicorn
+
 
 app = FastAPI()
 
@@ -24,8 +23,6 @@ app.mount("/media", StaticFiles(directory="media"), name="media")
 templates = Jinja2Templates(directory="templates",
                             autoescape=False, auto_reload=True)
 
-app.include_router(prefix="", router=default_api.router)
-
 
 @app.get('/health')
 def health_check():
@@ -36,6 +33,3 @@ def health_check():
 def home_page(request: Request, response_class=HTMLResponse, ):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
-if __name__ == '__main__':
-    uvicorn.run("main:app", reload=True)

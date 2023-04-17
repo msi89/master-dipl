@@ -9,6 +9,8 @@ FROM node:alpine as build
 # set working directory
 # this is the working folder in the container
 # from which the app will be running from
+ARG API_URL
+ENV VITE_APP_API_URL=${API_URL}
 WORKDIR /app
 # copy everything to /app directory
 # as opposed to on dev, in prod everything is copied to docker
