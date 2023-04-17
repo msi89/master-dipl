@@ -1,11 +1,19 @@
 from fastapi import APIRouter, File, UploadFile, Request, Depends
+from fastapi.responses import Response
 from typing import Annotated
 from services.detect import FaceSickness
 from services.facesdetect import FaceSicknessService
+from services.base import BaseService
 from utils import medias
 
 
 router = APIRouter()
+
+
+@router.post("/clean")
+async def clean_media_files(request: Request, service: BaseService = Depends()):
+    service.cleanMediaFolder()
+    return Response(status_code=204)
 
 
 @router.post("/upload")

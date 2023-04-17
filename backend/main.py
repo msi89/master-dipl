@@ -9,7 +9,7 @@ import uvicorn
 app = FastAPI()
 
 origins = [
-   '*'
+    '*'
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -34,7 +34,7 @@ def health_check():
 
 @app.get("/", include_in_schema=False)
 def home_page(request: Request, response_class=HTMLResponse, ):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("welcome.html", {"request": request})
 
 
 if __name__ == '__main__':
