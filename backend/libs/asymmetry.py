@@ -32,7 +32,7 @@ def asymetry_detection(img, output: str) -> tuple:
             symmetry_desc = "We recommand you take contact of a specialist"
         elif symmetry < 0.5:
             line_color = (0, 150, 255)
-            symmetry_status = "warning"
+            symmetry_status = "non-critical"
             symmetry_desc = "You must consult a doctor or a specialist"
         elif symmetry < 0.7:
             line_color = (255, 0, 0)

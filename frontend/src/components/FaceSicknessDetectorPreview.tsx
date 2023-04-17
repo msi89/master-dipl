@@ -1,5 +1,5 @@
 import { Modal } from "./ui/Modal";
-import { AsymetryResult } from "../services/models";
+import { AsymetryResult } from "../store/models";
 
 
 type Prop = {

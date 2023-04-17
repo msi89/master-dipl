@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "./ui/Spinner";
-import { detectAsymetry } from "../services/services";
-import { AsymetryResult } from "../services/models";
+import { detectAsymetry } from "../store/services";
+import { AsymetryResult, AsymetryStatusEnum } from "../store/models";
 
 
 type Prop = {
@@ -9,6 +9,8 @@ type Prop = {
     onDelete?: (src: string) => void
     onClick?: (src: string, result: AsymetryResult) => void
 };
+
+const API_URL = import.meta.env.VITE_APP_API_URL
 
 export function FaceSicknessDetector(prop: Prop) {
 
@@ -20,19 +22,12 @@ export function FaceSicknessDetector(prop: Prop) {
         loadAsymmetry()
     }, [prop.src])
 
-    const reformat = useMemo(() => {
-        if(!result) return {class: '', status: ''}
-        if(result.symmetry < 0.1) return {
-            class: 'bg-red-500',
-            status: 'critical'
-        }
-        else if(result.symmetry < 0.5) return {
-            class: 'bg-orange-500',
-            status: 'normal'
-        }
-        else return {
-            class: 'bg-green-500',
-            status: 'good'
+    const bannerColor = useMemo(() => {
+        if(!result) return ''
+        switch(result.status) {
+            case AsymetryStatusEnum.CRITICAL: return 'bg-red-500'
+            case AsymetryStatusEnum.NONCRITICAL: return 'bg-orange-500'
+            default: return 'bg-green-500'
         }
     }, [result])
 
@@ -41,7 +36,7 @@ export function FaceSicknessDetector(prop: Prop) {
         setLoading(true)
         detectAsymetry(blob).then(res => {
           console.log(res.data);
-          setURL(`http://localhost:8000/${res.data.image_url}`)
+          setURL(`${API_URL}/${res.data.image_url}`)
           setResult(res.data.result[0])
           setLoading(false)
         }).catch(err =>  {
@@ -60,8 +55,8 @@ export function FaceSicknessDetector(prop: Prop) {
     {loading && <div className="absolute top-0 bottom-0 left-0 right-0 bg-black/70">
         <Spinner/> 
     </div>}
-    {result && <div className={ `text-white text-[12px] absolute bottom-0 right-0 py-1 px-2  ${reformat.class}`}>
-        {reformat.status}: {Math.round(result.symmetry * 100)}%
+    {result && <div className={ `text-white text-[12px] absolute bottom-0 right-0 py-1 px-2  ${bannerColor}`}>
+        {result.status}: {Math.round(result.symmetry * 100)}%
     </div>}
   </div>
 

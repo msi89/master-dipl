@@ -1,10 +1,10 @@
 
-export type AsymetryStatus = "good" | "normal" | "warning" | "critical";
+export type AsymetryStatus = "good" | "normal" | "non-critical" | "critical";
 export enum AsymetryStatusEnum {
-  GOOD = "forward",
-  NORMAL = "back",
-  WARNING = "none",
-  CRITICAL = "none",
+  GOOD = "good",
+  NORMAL = "normal",
+  NONCRITICAL = "non-critical",
+  CRITICAL = "critical",
 }
 
 

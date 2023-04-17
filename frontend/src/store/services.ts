@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { Asymetry } from "./models";
 
 const api = axios.create({
-    baseURL:"http://localhost:8000"
+    baseURL: import.meta.env.VITE_APP_API_URL
 })
 
 export async function detectAsymetry(file: Blob) : Promise<AxiosResponse<Asymetry, any>>{
