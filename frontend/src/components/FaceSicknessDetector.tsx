@@ -37,7 +37,8 @@ export function FaceSicknessDetector(prop: Prop) {
         detectAsymetry(blob).then(res => {
           console.log(res.data);
           setURL(`${API_URL}/${res.data.image_url}`)
-          setResult(res.data.result[0])
+         
+           setResult(res.data.result[0])
           setLoading(false)
         }).catch(err =>  {
           setLoading(false)
