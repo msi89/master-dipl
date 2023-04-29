@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Spinner } from "./ui/Spinner";
-import { detectAsymetry } from "../store/services";
-import { AsymetryResult, AsymetryStatusEnum } from "../store/models";
+import { detectAsymetry, getAsymetryMeasures } from "../store/services";
+import { AsymetryResult, AsymetryStatusEnum, FaceMeasure } from "../store/models";
 
 
 type Prop = {
@@ -14,9 +14,10 @@ const API_URL = import.meta.env.VITE_APP_API_URL
 
 export function FaceSicknessDetector(prop: Prop) {
 
-    const [url, setURL] = useState(prop.src)
+    const [url, setURL] = useState<string>()
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState<AsymetryResult>();
+  
 
     useEffect(() => {
         loadAsymmetry()
@@ -36,8 +37,8 @@ export function FaceSicknessDetector(prop: Prop) {
         setLoading(true)
         detectAsymetry(blob).then(res => {
           console.log(res.data);
-          setURL(`${API_URL}/${res.data.image_url}`)
-         
+           setURL(res.data.image_url)
+           if(res.data.result.length)
            setResult(res.data.result[0])
           setLoading(false)
         }).catch(err =>  {
@@ -45,9 +46,11 @@ export function FaceSicknessDetector(prop: Prop) {
         })
     }
 
+ 
+
     return <div className="relative w-[200px] h-[200px]"  >
-    <img src={url} className="w-full h-full object-cover" onClick={() => {
-       if(prop.onClick) prop.onClick(url, result!)
+    <img src={ url ? `${API_URL}/${url}`: prop.src} className="w-full h-full object-cover" onClick={() => {
+       if(prop.onClick && url) prop.onClick(url, result!)
     }}/>
     <div className="absolute top-0 p-2 cursor-pointer text-red-400 hover:text-red-600" onClick={() => {
      if(prop.onDelete) prop.onDelete(prop.src)

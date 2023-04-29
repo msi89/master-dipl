@@ -18,14 +18,6 @@ function App() {
   const [openModal, setOpenModal] = useState(false);
 
 
-  useEffect(() => {
-    // fetch("/app/health").then(res => res.json())
-    // .then(data => console.log("health check", data))
-    // .catch(err => console.error("error health", err))
-  }, [])
-
-
-
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files
     if (files === null) return
@@ -61,7 +53,8 @@ function App() {
      <FaceSicknessDetectorPreview
       open={openModal}
       setOpenModal={setOpenModal}
-      summary={selectedFace}
+      photo={selectedFace?.photo}
+      result={selectedFace?.result}
     />
   </>
   )

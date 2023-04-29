@@ -74,7 +74,7 @@ def calculateSymmetry(img):
     return diff_mean / img_mean
 
 
-def measure(image_path) -> list[FaceMeasure]:
+def getAsymetryMeasure(image_path) -> list[FaceMeasure]:
     # Chargement de l'image à évaluer
     # image_path = "faces/1.jpg"
     image = cv2.imread(image_path)

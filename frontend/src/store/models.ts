@@ -21,3 +21,15 @@ export interface AsymetryResult {
 }
 
 
+export interface FaceMeasure {
+  horizontal_asymmetry: number
+  vertical_asymmetry: number
+  proportionality: number
+  face_width: number
+  face_height: number
+  left_eye_width: number
+  right_eye_width: number
+  nose_width: number
+  mouth_width: number
+}
+
