@@ -10,3 +10,5 @@ Start
 ```bash
 docker-compose up
 ```
+
+visit: http://localhost:8000
