@@ -1,5 +1,12 @@
 # Face Sickness Detection
 
+
+Requirements: 
+- Docker
+- Docker-compose
+
+Start 
+
 ```bash
-uvicorn main:app --reload
+docker-compose up
 ```
