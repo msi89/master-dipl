@@ -37,7 +37,11 @@ async def detect_asymmetry(file: Annotated[
     file_path = os.path.abspath(filename)
     with open(file_path, "wb") as buffer:
         buffer.write(await file.read())
-    result = await service.detectAsymmetry(filename)
+    result = await service.detectAsymmetry(
+        filename=filename,
+        measurable=True,
+        grid=True
+    )
     return result
 
 

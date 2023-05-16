@@ -12,6 +12,7 @@ export interface Asymetry {
   image_url: string
   faces: number
   result: AsymetryResult[]
+  measure: FaceMeasure[]
 }
 
 export interface AsymetryResult {

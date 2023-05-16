@@ -1,30 +1,19 @@
 import { Modal } from "./ui/Modal";
-import { AsymetryResult, FaceMeasure } from "../store/models";
+import { Asymetry, FaceMeasure } from "../store/models";
 import { useEffect, useState } from "react";
 import { getAsymetryMeasures } from "../store/services";
 
+const API_URL = import.meta.env.VITE_APP_API_URL
 
 type Prop = {
-    result?: AsymetryResult
-    photo?: string
+    data?: Asymetry
     open: boolean;
     setOpenModal: (v: boolean) => void;
   };
-  const API_URL = import.meta.env.VITE_APP_API_URL
+
 export function FaceSicknessDetectorPreview(prop: Prop) {
 
-    const {result , photo, open, setOpenModal} = prop
-    const [measures, setMeasures] = useState<FaceMeasure[]>([]);
-
- useEffect(() => {
-  if(photo){
-    getAsymetryMeasures(photo)
-  .then(measures => {
-   setMeasures(measures.data)
-  })
-  .catch(err => console.log(err))
-  }
- }, [photo])
+    const {data , open, setOpenModal} = prop
   
     return (
       <Modal
@@ -36,43 +25,43 @@ export function FaceSicknessDetectorPreview(prop: Prop) {
         <div className="min-h-96 w-[600px]  py-4 px-[30px] text-gray-500 dark:text-gray-200 bg-white dark:bg-gray-700 shadow rounded">
           <div className="flex items-center justify-between">
             {/* <h1>Diagnostic: {result ? result.status : '' }</h1> */}
-            <h1>Diagnostic</h1>
+            <h1>Диагностика </h1>
             <span onClick={() => {setOpenModal(false)}} className="cursor-pointer">x</span>
           </div>
         
           <div className="my-5 w-full relative" >
             <div className="h-[400px] w-full">
-               {photo && <img src={`${API_URL}/${photo}`} className=" w-full h-full object-cover"/> }
+               {<img src={`${API_URL}/${data?.image_url}`} className=" w-full h-full object-cover"/> }
             </div>
            
-            { result && <div className="flex flex-col items-center p-4 w-full">
-              <span>You face symmetry of {Math.round(result.symmetry * 100)}%</span>
+            { data?.result.length && <div className="flex flex-col items-center p-4 w-full">
+              <span>You face symmetry of {Math.round(data.result[0].symmetry * 100)}%</span>
               {/* <span> {result.descrition}</span> */}
             </div> }
-            {measures.length  && <div className=" grid grid-cols-2">
-              <div>Face height</div>
-              <div className="text-right">{measures[0].face_height}</div>
-              <div>Face width</div>
-              <div className="text-right">{measures[0].face_width}</div>
-              <div>Left eye width</div>
-              <div className="text-right">{measures[0].left_eye_width}</div>
-              <div>Right eye width</div>
-              <div className="text-right">{measures[0].right_eye_width}</div>
-              <div>Month width</div>
-              <div className="text-right">{measures[0].mouth_width}</div>
-              <div>Nose width</div>
-              <div className="text-right">{measures[0].nose_width}</div>
-              <div>Vertical asymmetry</div>
+            {  data?.measure.length  && <div className=" grid grid-cols-2">
+              <div>{/*Face height*/}Высота лица</div> 
+              <div className="text-right">{data?.measure[0].face_height}</div>
+              <div>{/*Face width*/}Ширина лица</div>
+              <div className="text-right">{data?.measure[0].face_width}</div>
+              <div>{/*Left eye width*/}Ширина левого глаза</div>
+              <div className="text-right">{data?.measure[0].left_eye_width}</div>
+              <div>{/*Right eye width*/}Ширина правого глаза</div>
+              <div className="text-right">{data?.measure[0].right_eye_width}</div>
+              <div>{/*Month width*/}Ширина месяца</div>
+              <div className="text-right">{data?.measure[0].mouth_width}</div>
+              <div>{/*Nose width*/}Ширина носа</div>
+              <div className="text-right">{data?.measure[0].nose_width}</div>
+              <div>{/*Vertical asymmetry*/}Вертикальная асимметрия</div>
               <div className="text-right">
-              {parseFloat((measures[0].vertical_asymmetry*100).toFixed(1))}%
+              {parseFloat((data?.measure[0].vertical_asymmetry*100).toFixed(1))}%
               </div>
-              <div>Horizontal asymmetry</div>
+              <div>{/*Horizontal asymmetry*/}Горизонтальная асимметрия</div>
               <div className="text-right">
-               {parseFloat((measures[0].horizontal_asymmetry*100).toFixed(1))}%
+               {parseFloat((data?.measure[0].horizontal_asymmetry*100).toFixed(1))}%
               </div>
-              <div>Proportionality</div>
+              <div>{/*Proportionality*/}Пропорциональность</div>
               <div className="text-right">
-                {parseFloat((measures[0].proportionality*100).toFixed(1))}%
+                {parseFloat((data?.measure[0].proportionality*100).toFixed(1))}%
               </div>
             </div>}
           </div>

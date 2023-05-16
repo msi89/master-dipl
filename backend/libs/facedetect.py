@@ -43,26 +43,13 @@ def asymetry_detection(img, output: str) -> tuple:
             symmetry=symmetry, descrition=symmetry_desc,
             status=symmetry_status))
         # cv2.rectangle(img, (x, y), (x+w, y+h), line_color, 2)
-        draw_eyes_landmarks(img, index, line_color)
+        # draw_eyes_landmarks(img, index, line_color)
+        # draw_grid_on_image(img)
 
-    cv2.imwrite(output, img)
-    cv2.waitKey(0)
+    # cv2.imwrite(output, img)
+    # cv2.waitKey(0)
     # Retourner l'image avec les visages détectés
     return (result, len(faces))
-
-
-def draw_eyes_landmarks(img, index, color: tuple = (0, 255, 0)):
-    # Initialiser le détecteur de visage et les points de repère du visage
-
-    # Détecter les visages dans l'image
-    faces = detector(img, 1)
-    face = faces[index]
-    landmarks = predictor(img, face)
-    # Dessiner un cercle sur chaque point de repère du visage
-    for n in range(0, 68):
-        x = landmarks.part(n).x
-        y = landmarks.part(n).y
-        cv2.circle(img, (x, y), 2, color, -1)
 
 
 # Fonction pour calculer la symétrie d'un visage
@@ -134,4 +121,139 @@ def getAsymetryMeasure(image_path) -> list[FaceMeasure]:
         # print("- right_eye_width : {:.2f}".format(right_eye_width))
         # print("- nose_width : {:.2f}".format(nose_width))
         # print("- mouth_width : {:.2f}".format(mouth_width))
+
     return result
+
+
+def draw_eyes_landmarks(img, index, color: tuple = (0, 255, 0)):
+    # Initialiser le détecteur de visage et les points de repère du visage
+
+    # Détecter les visages dans l'image
+    faces = detector(img, 1)
+    face = faces[index]
+    landmarks = predictor(img, face)
+    # Dessiner un cercle sur chaque point de repère du visage
+    for n in range(0, 68):
+        x = landmarks.part(n).x
+        y = landmarks.part(n).y
+        cv2.circle(img, (x, y), 2, color, -1)
+
+
+def grid_on_face_asymmetry(img_path, outpath=str):
+    img = cv2.imread(img_path)
+    # Detect faces in image
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(
+        gray, scaleFactor=1.3, minNeighbors=5)
+
+    # Loop over each face and calculate asymmetry
+    for (x, y, w, h) in faces:
+        # Compute face edges using Canny edge detection
+        gray_face = gray[y:y+h, x:x+w]
+        edges = cv2.Canny(gray_face, threshold1=30, threshold2=100)
+
+        # Compute asymmetry based on edge differences between left and right
+        # sides of face
+        left_half = edges[:, :w//2]
+        right_half = edges[:, w//2:]
+        # Resize one half to have the same shape as the other half
+        right_half = cv2.resize(
+            right_half, (left_half.shape[1], left_half.shape[0]))
+        asymmetry = np.sum(np.abs(left_half - right_half)) / \
+            float(left_half.shape[0] * left_half.shape[1])
+
+        print("asymetry: ", asymmetry)
+        # Draw grid on face region if asymmetry is below threshold
+        # if asymmetry < 0.2:
+        if asymmetry < 30:
+            # Define grid parameters
+            rows = 10
+            cols = 10
+            grid_color = (5, 5, 5)  # Green color
+            thickness = 5
+
+            # Compute rectangle size based on grid size and face dimensions
+            rect_height = h // rows
+            rect_width = w // cols
+
+            # Draw rectangles to form grid on face region
+            for i in range(rows):
+                for j in range(cols):
+                    x_rect = x + j * rect_width
+                    y_rect = y + i * rect_height
+                    cv2.rectangle(
+                        img,
+                        (x_rect, y_rect),
+                        (x_rect + rect_width, y_rect + rect_height),
+                        grid_color,
+                        thickness
+                    )
+
+    # Display image
+    # filename, ext = os.path.splitext(img_path)
+    # cv2.imwrite(f'{filename}.out{ext}', img)
+    cv2.imwrite(outpath, img)
+
+
+def draw_grid_on_image(imgpath, save=False):
+    img = cv2.imread(imgpath)
+
+    # Define grid parameters
+    rows = 10
+    cols = 10
+    # grid_color = (0, 255, 0)  # Green color
+    grid_color = (5, 5, 5)  # Gray color
+    thickness = 5
+
+    # Compute rectangle size based on grid size and image dimensions
+    height, width, _ = img.shape
+    rect_height = height // rows
+    rect_width = width // cols
+
+    # Draw rectangles to form grid
+    for i in range(rows):
+        for j in range(cols):
+            x = j * rect_width
+            y = i * rect_height
+            cv2.rectangle(img, (x, y), (x + rect_width, y +
+                                        rect_height), grid_color, thickness)
+    if save:
+        # Save image
+        cv2.imwrite(imgpath, img)
+
+
+def draw_grid_on_face(imgpath, save=False):
+    # Load image and initialize face detector
+    img = cv2.imread(imgpath)
+    # face_cascade = cv2.CascadeClassifier(
+    #     cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+    # Detect faces in image
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = face_cascade.detectMultiScale(
+        gray, scaleFactor=1.3, minNeighbors=5)
+
+    # Loop over each face and draw grid on face region
+    for (x, y, w, h) in faces:
+        # Define grid parameters
+        rows = 10
+        cols = 10
+        # grid_color = (0, 255, 0)  # Green color
+        grid_color = (5, 5, 5)  # Grey color
+        thickness = 5
+
+        # Compute rectangle size based on grid size and face dimensions
+        rect_height = h // rows
+        rect_width = w // cols
+
+        # Draw rectangles to form grid on face region
+        for i in range(rows):
+            for j in range(cols):
+                x_rect = x + j * rect_width
+                y_rect = y + i * rect_height
+                cv2.rectangle(img, (x_rect, y_rect), (x_rect + rect_width,
+                                                      y_rect + rect_height), grid_color, thickness)
+
+    if save:
+        # Save image
+        cv2.imwrite(imgpath, img)
