@@ -35,10 +35,10 @@ export function FaceSicknessDetectorPreview(prop: Prop) {
             </div>
            
             { data?.result.length && <div className="flex flex-col items-center p-4 w-full">
-              <span>You face symmetry of {Math.round(data.result[0].symmetry * 100)}%</span>
+              {/* <span>You face symmetry of {Math.round(data.result[0].symmetry * 100)}%</span> */}
               {/* <span> {result.descrition}</span> */}
             </div> }
-            {  data?.measure.length  && <div className=" grid grid-cols-2">
+            {  data?.measure.length  && <div className=" grid grid-cols-2 text-sm">
               <div>{/*Face height*/}Высота лица</div> 
               <div className="text-right">{data?.measure[0].face_height}</div>
               <div>{/*Face width*/}Ширина лица</div>
@@ -47,7 +47,7 @@ export function FaceSicknessDetectorPreview(prop: Prop) {
               <div className="text-right">{data?.measure[0].left_eye_width}</div>
               <div>{/*Right eye width*/}Ширина правого глаза</div>
               <div className="text-right">{data?.measure[0].right_eye_width}</div>
-              <div>{/*Month width*/}Ширина месяца</div>
+              <div>{/*Month width*/}Ширина рта</div>
               <div className="text-right">{data?.measure[0].mouth_width}</div>
               <div>{/*Nose width*/}Ширина носа</div>
               <div className="text-right">{data?.measure[0].nose_width}</div>

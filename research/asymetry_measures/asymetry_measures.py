@@ -56,14 +56,3 @@ def measure(image_path):
         print("- nose_width : {:.2f}".format(nose_width))
         print("- mouth_width : {:.2f}".format(mouth_width))
 
-
-print("1.jpg*****************************")
-measure("faces/1.jpg")
-print("2.jpg*****************************")
-measure("faces/2.jpg")
-print("3.jpg*****************************")
-measure("faces/3.jpg")
-print("4.jpg*****************************")
-measure("faces/4.jpg")
-print("5.jpg*****************************")
-measure("faces/5.jpg")

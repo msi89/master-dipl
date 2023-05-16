@@ -11,7 +11,7 @@ eye_cascade = cv2.CascadeClassifier(
     cv2.data.haarcascades + 'haarcascade_eye.xml')
 
 # Загрузика изображение и преобразуем его в оттенки серого
-img = cv2.imread('faces/2.jpg')
+img = cv2.imread('faces/lena.jpg')
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # Обнаружение лиц на изображении
@@ -35,15 +35,14 @@ for (x, y, w, h) in faces:
         angle = np.arccos(np.dot(eye_vector, face_vector) /
                           (np.linalg.norm(eye_vector) * np.linalg.norm(face_vector)))
         # Нарисуем круги в уголках глаз и покажите измерения
-        cv2.circle(roi_color, (ex+(ew//2), ey+(eh//2)), 3, (0, 255, 0), -1)
-        cv2.putText(roi_color, "Distance: {:.2f} pixels".format(
-            eye_distance), (ex, ey-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), 1)
-        cv2.putText(roi_color, "Angle: {:.2f} radians".format(
-            angle), (ex, ey+eh+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0), 1)
+        # cv2.circle(roi_color, (ex+(ew//2), ey+(eh//2)), 3, (0, 255, 0), -1)
+        cv2.putText(roi_color, "{:.2f}".format(
+            eye_distance), (ex, ey-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (5, 5, 5), 5) # Distance:pixels
+        
+        cv2.putText(roi_color, "{:.2f}".format(
+            angle), (ex, ey+eh+10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (5, 5, 5), 5) #Angle:  radians
 
-        print(f"eye={index}, distance={eye_distance}, angle={angle}")
+        print(f"eye={index}, distance={eye_distance} pixels, angle={angle} radians")
 
 # Вывод изображения с измерениями
-cv2.imwrite('faces/out/3.jpg', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv2.imwrite("outputs/result7.jpg", img)

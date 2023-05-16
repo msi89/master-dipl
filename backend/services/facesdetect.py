@@ -1,9 +1,12 @@
-from fastapi import UploadFile
 import cv2
-import uuid
 import os
 
-from libs.facedetect import asymetry_detection, getAsymetryMeasure, draw_grid_on_image
+from libs.facedetect import (
+    asymetry_detection,
+    getAsymetryMeasure,
+    draw_grid_on_image,
+    draw_grid_on_face
+)
 from schemas.asymetry import AsymmetryResult, FaceMeasure
 
 
@@ -16,7 +19,10 @@ class FaceSicknessService():
             results.append(data)
         return results
 
-    async def detectAsymmetry(self, filename: str, measurable: bool = False, grid=False) -> AsymmetryResult:
+    async def detectAsymmetry(self,
+                              filename: str,
+                              measurable: bool = False,
+                              grid=False) -> AsymmetryResult:
         '''чтение изображения из временного файла и вызов функции 
         распознавания ориентиров лица'''
         file_path = os.path.abspath(filename)
@@ -30,7 +36,8 @@ class FaceSicknessService():
         if measurable:
             data.measure = getAsymetryMeasure(file_path)
         if grid:
-            draw_grid_on_image(file_path, True)
+            # draw_grid_on_image(file_path, True)
+            draw_grid_on_face(file_path, True)
         return data
 
     async def getFaceMeasure(self, file_path: str) -> list[FaceMeasure]:

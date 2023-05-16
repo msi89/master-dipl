@@ -42,7 +42,7 @@ function App() {
         {/* Face sickness detector */}
         Оценка асимметрия лиц
       </h1>
-      <FileInput onChange={handleFileChange} multiple accept="image/png,image/jpeg,image/webp" />
+      <FileInput onChange={handleFileChange} multiple accept="image/png,image/jpeg,image/webp,image/" />
 
       <div className="flex flex-wrap p-2 gap-2">
         {images.map(url => <FaceSicknessDetector

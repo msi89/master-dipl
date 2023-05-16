@@ -55,9 +55,9 @@ export function FaceSicknessDetector(prop: Prop) {
     {loading && <div className="absolute top-0 bottom-0 left-0 right-0 bg-black/70">
         <Spinner/> 
     </div>}
-    {data && data.result.length && <div className={ `text-white text-[12px] absolute bottom-0 right-0 py-1 px-2  ${bannerColor}`}>
+    {/* {data && data.result.length && <div className={ `text-white text-[12px] absolute bottom-0 right-0 py-1 px-2  ${bannerColor}`}>
         {data.result[0].status}: {Math.round(data.result[0].symmetry * 100)}%
-    </div>}
+    </div>} */}
   </div>
 
 
