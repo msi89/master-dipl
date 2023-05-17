@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from router import default as default_api
-import uvicorn
+# import uvicorn
 
 app = FastAPI()
 
@@ -37,5 +37,5 @@ def home_page(request: Request, response_class=HTMLResponse, ):
     return templates.TemplateResponse("welcome.html", {"request": request})
 
 
-if __name__ == '__main__':
-    uvicorn.run("main:app", reload=True)
+# if __name__ == '__main__':
+#     uvicorn.run("main:app", reload=True)

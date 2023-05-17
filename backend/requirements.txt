@@ -4,10 +4,12 @@ jinja2
 python-multipart
 Pillow==9.3.0
 pytz==2018.4
+cmake
 dlib
-facenet_pytorch
-face_alignment
 numpy
-pandas
 opencv-python
-scikit-learn==0.24.2
+# pandas
+# facenet_pytorch
+# face_alignment
+# scikit-learn==0.24.2
+
